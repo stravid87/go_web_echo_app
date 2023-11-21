@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Containerized Go App Lives</title>
+    
+</head>
+<body>
+    <h1>Welcome Home: A Golang / Postgress App Containerized</h1>
+    <div>
+        <a href="/page3"> Previous Page </a>  | 
+        <a href="/page2"> Next Page </a>
+    </div>
+    <hr>
+    <h3>ECHO Server Test</h3>
+    <form action="/" method="POST">
+        <textarea rows="10" cols="50" id="input-area">This is my test placeholder text</textarea>
+        <input type="submit" id="submit-button">
+    </form>
+    <br>
+    <div>
+        <textarea rows="10" cols="50" id="response-area"></textarea>
+    </div>
+</body>
+<footer>
+    <p>Custom Message: <b>"{{ .MessageToUser }}"</b></p>
+    
+    <script>
+        const input = document.getElementById("input-area")
+        const response = document.getElementById("response-area")
+        const submissionButton = document.getElementById("submit-button")
+
+        submissionButton.addEventListener("click", inputHandler)
+
+        async function inputHandler(e){
+            e.preventDefault()
+            //console.log(input.value)
+
+            let res = await fetch("/", {
+                method: "POST",
+                headers: {
+                    "x-user-header": "myheader"
+                },
+                body: input.value
+            })
+
+            let body = await res.text()
+            console.log("body", body)
+            response.innerHTML = body
+        }
+
+
+
+    </script>
+</footer>
+</html>

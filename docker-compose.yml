@@ -1,0 +1,13 @@
+version: "3.3"
+
+services:
+  pgDatabase:
+    image: postgres:latest
+    container_name: generic_pg_db
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_USER: postgres
+
+# $docker run -dit -p 9876:5432 -e POSTGRES_PASSWORD=1234 -e POSTGRES_USER=postgres --name generic_pg_db postgres
