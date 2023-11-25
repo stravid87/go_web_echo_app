@@ -5,53 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Containerized Go App Lives</title>
     
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
 </head>
 <body>
-    <h1>Welcome Home: A Golang / Postgress App Containerized</h1>
-    <div>
-        <a href="/page3"> Previous Page </a>  | 
-        <a href="/page2"> Next Page </a>
+    <div id="app">
+        <h1>{{ title }}</h1>    
+        <div>
+            <a href="/page3"> Previous Page </a>  | 
+            <a href="/page2"> Next Page </a>
+        </div>
+        <hr>
+        <h3>ECHO Server Test</h3>
+        <form @submit.prevent="submitForm">
+            <textarea rows="10" cols="50" v-model="inputText">This is my test placeholder text</textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <br>
+        <div>
+            <textarea rows="10" cols="50" v-model="responseText"></textarea>
+        </div>
     </div>
-    <hr>
-    <h3>ECHO Server Test</h3>
-    <form action="/" method="POST">
-        <textarea rows="10" cols="50" id="input-area">This is my test placeholder text</textarea>
-        <input type="submit" id="submit-button">
-    </form>
-    <br>
-    <div>
-        <textarea rows="10" cols="50" id="response-area"></textarea>
-    </div>
-</body>
-<footer>
-    <p>Custom Message: <b>"{{ .MessageToUser }}"</b></p>
-    
+    <footer>
+        <p>Custom Message: <b>{{ messageToUser }}</b></p>
+    </footer>
+
     <script>
-        const input = document.getElementById("input-area")
-        const response = document.getElementById("response-area")
-        const submissionButton = document.getElementById("submit-button")
+        const app = Vue.creatApp({
+            data() {
+                return {
+                    title: "Welcome Home: A Golang / Postgress App Containerized",
+                    inputText: "This is my test placeholder text",
+                    responseText: "",
+                    messageToUser: "Custom message to user" 
+                };
+            },
+            methods: {
+                async submitForm() {
+                    try {
+                        const response = await fetch("/", {
+                            method: "POST",
+                            headers: {
+                                "x-user-header": "myheader",
+                                "Content-Type": "text/plain"
+                            },
+                            body: this.inputText
+                        });
 
-        submissionButton.addEventListener("click", inputHandler)
-
-        async function inputHandler(e){
-            e.preventDefault()
-            //console.log(input.value)
-
-            let res = await fetch("/", {
-                method: "POST",
-                headers: {
-                    "x-user-header": "myheader"
-                },
-                body: input.value
-            })
-
-            let body = await res.text()
-            console.log("body", body)
-            response.innerHTML = body
-        }
-
-
-
+                        this.responseText = await response.text();
+                    } catch (error) {
+                        console.error("Error:", error)
+                    }
+                }
+            }
+        });
+        app.mount('#app');
     </script>
-</footer>
+</body>
 </html>

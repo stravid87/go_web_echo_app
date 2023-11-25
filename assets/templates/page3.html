@@ -4,12 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Three</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
 </head>
 <body>
-    <h1>Welcome to Page 3</h1>
-    <div>
-        <a href="/page2"> Previous Page </a>  | 
-        <a href="/"> Next Page </a>
+    <div id="app">
+        <h1>Welcome to Page 3</h1>
+        <div>
+            <router-link to="/page2"> Previous Page </router-link> |
+            <router-link to="/"> Next Page </router-link>
+        </div>
     </div>
+
+    <footer>
+        <script>
+            const app = Vue.createApp({});
+
+            app.mount('#app');
+        </script>
+    </footer>
 </body>
 </html>
