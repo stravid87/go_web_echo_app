@@ -9,7 +9,6 @@
 </head>
 <body>
     <div id="app">
-        <h1>{{ title }}</h1>    
         <div>
             <a href="/page3"> Previous Page </a>  | 
             <a href="/page2"> Next Page </a>
@@ -21,45 +20,64 @@
             <button type="submit">Submit</button>
         </form>
         <br>
-        <div>
-            <textarea rows="10" cols="50" v-model="responseText"></textarea>
-        </div>
+        <transition name="bounce">
+            <div v-if="responseText !== ''">
+                <textarea rows="10" cols="50" v-model="responseText"></textarea>
+            </div>
+        </transition>
     </div>
+
     <footer>
-        <p>Custom Message: <b>{{ messageToUser }}</b></p>
-    </footer>
+        <script>
+            const { ref } = Vue;
 
-    <script>
-        const app = Vue.creatApp({
-            data() {
-                return {
-                    title: "Welcome Home: A Golang / Postgress App Containerized",
-                    inputText: "This is my test placeholder text",
-                    responseText: "",
-                    messageToUser: "Custom message to user" 
-                };
-            },
-            methods: {
-                async submitForm() {
-                    try {
-                        const response = await fetch("/", {
-                            method: "POST",
-                            headers: {
-                                "x-user-header": "myheader",
-                                "Content-Type": "text/plain"
-                            },
-                            body: this.inputText
-                        });
+            Vue.createApp({
+                setup() {
+                    const inputText = ref("This is my test placeholder text");
+                    const responseText = ref("");
+                    
+                    const submitForm = async () => {
+                        try {
+                            const response = await fetch("/", {
+                                method: "POST",
+                                headers: {
+                                    "x-user-header": "myheader",
+                                    "Content-Type": "text/plain"
+                                },
+                                body: inputText.value
+                            });
 
-                        this.responseText = await response.text();
-                    } catch (error) {
-                        console.error("Error:", error)
-                    }
+                            responseText.value = await response.text();
+                        } catch (error) {
+                            console.error("Error:", error);
+                        }
+                    };
+
+                    return { inputText, responseText, submitForm };
+                }
+            }).mount('#app');
+        </script>
+
+        <!-- CSS for the transition effect -->
+        <style>
+            .bounce-enter-active {
+                animation: bounce-in 0.5s;
+            }
+            .bounce-leave-active {
+                animation: bounce-in 0.5s reverse;
+            }
+            @keyframes bounce-in {
+                0% {
+                    transform: scale(0);
+                }
+                50% {
+                    transform: scale(1.25);
+                }
+                100% {
+                    transform: scale(1);
                 }
             }
-        });
-        
-        app.mount('#app');
-    </script>
+        </style>
+    </footer>
 </body>
 </html>

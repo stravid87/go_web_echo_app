@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Two</title>
-
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
 </head>
 <body>
@@ -23,7 +22,7 @@
             <button type="submit">Create User</button>
         </form>
         <br>
-        <textarea rows="5" cols="50" id="response-area1"></textarea>
+        <textarea rows="5" cols="50" v-model="responseText1"></textarea>
         <h3>Get User by Username</h3>
         <form @submit.prevent="getUser">
             <label for="username2"><input type="text" id="username2" v-model="usernameInput2">: USERNAME</label><br>
@@ -32,17 +31,19 @@
         <br>
         <textarea rows="5" cols="50" v-model="responseText2"></textarea>
     </div>
-    <footer>    
+    <footer>
         <script>
-            const app = Vue.createApp({
+            const { ref } = Vue;
+
+            Vue.createApp({
                 data() {
                     return {
-                        emailInput: "test@test.com",
-                        usernameInput: "TesterChester",
-                        passwordInput: "1234",
-                        responseText1: "",
-                        usernameInput2: "TesterChester",
-                        responseText2: ""
+                        emailInput: ref("test@test.com"),
+                        usernameInput: ref("TesterChester"),
+                        passwordInput: ref("1234"),
+                        responseText1: ref(""),
+                        usernameInput2: ref("TesterChester"),
+                        responseText2: ref("")
                     };
                 },
                 methods: {
@@ -88,9 +89,7 @@
                         }
                     }
                 }
-            });
-
-            app.mount('#app');
+            }).mount('#app');
         </script>
     </footer>
 </body>
