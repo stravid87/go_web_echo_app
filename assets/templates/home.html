@@ -5,53 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Containerized Go App Lives</title>
     
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
 </head>
 <body>
-    <h1>Welcome Home: A Golang / Postgress App Containerized</h1>
-    <div>
-        <a href="/page3"> Previous Page </a>  | 
-        <a href="/page2"> Next Page </a>
+    <div id="app">
+        <div>
+            <a href="/page3"> Previous Page </a>  | 
+            <a href="/page2"> Next Page </a>
+        </div>
+        <hr>
+        <h3>ECHO Server Test</h3>
+        <form @submit.prevent="submitForm">
+            <textarea rows="10" cols="50" v-model="inputText">This is my test placeholder text</textarea>
+            <button type="submit">Submit</button>
+        </form>
+        <br>
+        <transition name="bounce">
+            <div v-if="responseText !== ''">
+                <textarea rows="10" cols="50" v-model="responseText"></textarea>
+            </div>
+        </transition>
     </div>
-    <hr>
-    <h3>ECHO Server Test</h3>
-    <form action="/" method="POST">
-        <textarea rows="10" cols="50" id="input-area">This is my test placeholder text</textarea>
-        <input type="submit" id="submit-button">
-    </form>
-    <br>
-    <div>
-        <textarea rows="10" cols="50" id="response-area"></textarea>
-    </div>
+
+    <footer>
+        <script>
+            const { ref } = Vue;
+
+            Vue.createApp({
+                setup() {
+                    const inputText = ref("This is my test placeholder text");
+                    const responseText = ref("");
+                    
+                    const submitForm = async () => {
+                        try {
+                            const response = await fetch("/", {
+                                method: "POST",
+                                headers: {
+                                    "x-user-header": "myheader",
+                                    "Content-Type": "text/plain"
+                                },
+                                body: inputText.value
+                            });
+
+                            responseText.value = await response.text();
+                        } catch (error) {
+                            console.error("Error:", error);
+                        }
+                    };
+
+                    return { inputText, responseText, submitForm };
+                }
+            }).mount('#app');
+        </script>
+
+        <!-- CSS for the transition effect -->
+        <style>
+            .bounce-enter-active {
+                animation: bounce-in 0.5s;
+            }
+            .bounce-leave-active {
+                animation: bounce-in 0.5s reverse;
+            }
+            @keyframes bounce-in {
+                0% {
+                    transform: scale(0);
+                }
+                50% {
+                    transform: scale(1.25);
+                }
+                100% {
+                    transform: scale(1);
+                }
+            }
+        </style>
+    </footer>
 </body>
-<footer>
-    <p>Custom Message: <b>"{{ .MessageToUser }}"</b></p>
-    
-    <script>
-        const input = document.getElementById("input-area")
-        const response = document.getElementById("response-area")
-        const submissionButton = document.getElementById("submit-button")
-
-        submissionButton.addEventListener("click", inputHandler)
-
-        async function inputHandler(e){
-            e.preventDefault()
-            //console.log(input.value)
-
-            let res = await fetch("/", {
-                method: "POST",
-                headers: {
-                    "x-user-header": "myheader"
-                },
-                body: input.value
-            })
-
-            let body = await res.text()
-            console.log("body", body)
-            response.innerHTML = body
-        }
-
-
-
-    </script>
-</footer>
 </html>

@@ -4,88 +4,93 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page Two</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
 </head>
 <body>
-    <h1>Welcome to Page 2</h1>
-    <div>
-        <a href="/"> Previous Page </a> | 
-        <a href="/page3"> Next Page </a> 
+    <div id="app">
+        <h1>Welcome to Page 2</h1>
+        <div>
+            <a href="/"> Previous Page </a> | 
+            <a href="/page3"> Next Page </a> 
+        </div>
+        <hr>
+        <h3>Add User Test</h3>
+        <form @submit.prevent="createUser">
+            <label for="email"><input type="text" id="email" v-model="emailInput">: EMAIL</label><br>
+            <label for="username"><input type="text" id="username" v-model="usernameInput">: USERNAME</label><br>
+            <label for="password"><input type="password" id="password" v-model="passwordInput">: PASSWORD</label><br>
+            <button type="submit">Create User</button>
+        </form>
+        <br>
+        <textarea rows="5" cols="50" v-model="responseText1"></textarea>
+        <h3>Get User by Username</h3>
+        <form @submit.prevent="getUser">
+            <label for="username2"><input type="text" id="username2" v-model="usernameInput2">: USERNAME</label><br>
+            <button type="submit">Get User</button>
+        </form>
+        <br>
+        <textarea rows="5" cols="50" v-model="responseText2"></textarea>
     </div>
-    <hr>
-    <h3>Add User Test</h3>
-    <form>
-        <label for="email"><input type="text" id="email" value="test@test.com">: EMAIL</label><br>
-        <label for="username"><input type="text" id="username" value="TesterChester">: USERNAME</label><br>
-        <label for="password"><input type="password" id="password" value="1234">: PASSWORD</label><br>
-        <input type="submit" id="create-user">
-    </form>
-    <br>
-    <textarea rows="5" cols="50" id="response-area1"></textarea>
-    <h3>Get User by Username</h3>
-    <form>
-        <label for="username2"><input type="text" id="username2" value="TesterChester">: USERNAME</label><br>
-        <input type="submit" id="get-user">
-    </form>
-    <br>
-    <textarea rows="5" cols="50" id="response-area2"></textarea>
+    <footer>
+        <script>
+            const { ref } = Vue;
 
-</body>
-<footer>    
-    <script>
-        const email = document.getElementById("email")
-        const username = document.getElementById("username")
-        const password = document.getElementById("password")
-        const submissionButton = document.getElementById("create-user")
-        const responseAreaOne = document.getElementById("response-area1")
-        const username2 = document.getElementById("username2")
-        const submissionButton2 = document.getElementById("get-user")
-        const responseAreaTwo = document.getElementById("response-area2")
-
-        submissionButton.addEventListener("click", createUserHandler)
-        submissionButton2.addEventListener("click", getUserHandler)
-
-        async function createUserHandler(e){
-            e.preventDefault()
-            //console.log(input.value)
-
-            let bodyObj = {
-                "email": email.value,
-                "username": username.value,
-                "password": password.value
-            }
-
-            console.log("bodyObj: ", bodyObj)
-
-            let res = await fetch("/create-user", {
-                method: "POST",
-                headers: {
-                    "x-user-header": "post to create user"
+            Vue.createApp({
+                data() {
+                    return {
+                        emailInput: ref("test@test.com"),
+                        usernameInput: ref("TesterChester"),
+                        passwordInput: ref("1234"),
+                        responseText1: ref(""),
+                        usernameInput2: ref("TesterChester"),
+                        responseText2: ref("")
+                    };
                 },
-                body: JSON.stringify(bodyObj)
-            })
+                methods: {
+                    async createUser() {
+                        const bodyObj = {
+                            email: this.emailInput,
+                            username: this.usernameInput,
+                            password: this.passwordInput
+                        };
 
-            let body = await res.json()
-            console.log(JSON.stringify(body.data, null, "\t") )
-            responseAreaOne.innerText = JSON.stringify(body.data, null, " ")
-        }
+                        try {
+                            const response = await fetch("/create-user", {
+                                method: "POST",
+                                headers: {
+                                    "x-user-header": "post to create user",
+                                    "Content-Type": "application/json"
+                                },
+                                body: JSON.stringify(bodyObj)
+                            });
 
-        async function getUserHandler(e){
-            e.preventDefault()
-            let queryString = username2.value
+                            const responseBody = await response.json();
+                            this.responseText1 = JSON.stringify(responseBody.data, null, " ");
+                        } catch (error) {
+                            console.error("Error:", error);
+                        }
+                    },
+                    async getUser() {
+                        const queryString = this.usernameInput2;
 
-            let res = await fetch(`/get-user?username=${queryString}`)
+                        try {
+                            const response = await fetch(`/get-user?username=${queryString}`);
 
-            if (res.status > 399) {
-                console.log("error retrieving user")
-                responseAreaTwo.innerText = "error retrieving user..."
-                return  
-            } 
+                            if (response.status > 399) {
+                                console.log("error retrieving user");
+                                this.responseText2 = "error retrieving user...";
+                                return;
+                            }
 
-            let body = await res.json()
-            console.log(JSON.stringify(body.data, null, "\t") )
-            responseAreaTwo.innerText = JSON.stringify(body.data, null, " ") 
-        }
-
-    </script>
-</footer>
+                            const responseBody = await response.json();
+                            this.responseText2 = JSON.stringify(responseBody.data, null, " ");
+                        } catch (error) {
+                            console.error("Error:", error);
+                        }
+                    }
+                }
+            }).mount('#app');
+        </script>
+    </footer>
+</body>
 </html>
