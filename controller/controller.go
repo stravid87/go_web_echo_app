@@ -18,13 +18,13 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	switch method := r.Method; {
 	case method == "GET":
 		fmt.Println("Request: ", r)
-		msg := fmt.Sprintf("Bro, ur so close....")
+		// msg := fmt.Sprintf("Bro, ur so close....")
 		t, err := template.ParseFiles("assets/templates/home.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 		t.Execute(w, map[string]interface{}{
-			"MessageToUser": msg,
+			// "MessageToUser": msg,
 		})
 		return
 	case method == "POST":
