@@ -1,0 +1,15 @@
+name: manual-action
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+      environment: 
+
+jobs:
+  Manual_Hello:
+    runs-on: ubuntu-latest
+    steps:
+      run: echo "Job 'Manual_Hello' was run"
+
+  
