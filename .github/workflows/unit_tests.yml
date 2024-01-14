@@ -1,0 +1,17 @@
+name: go_web_echo_app Unit Tests
+
+on:
+  workflow_dispatch
+
+jobs:
+  Run-Unit-Tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: Setup Go
+        uses: actions/setup-go@latest
+      - name: Build
+        run: go build -v ./..
+      - name: Test with the Go CLI
+        run: go test -v ./utils
