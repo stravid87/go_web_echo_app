@@ -1,6 +1,6 @@
 module go-web-echo-app
 
-go 1.21.1
+go 1.23
 
 require (
 	github.com/fatih/color v1.9.0 // indirect
