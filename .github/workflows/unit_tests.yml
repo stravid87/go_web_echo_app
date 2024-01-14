@@ -1,4 +1,4 @@
-name: go_web_echo_app Unit Tests
+name: go_web_echo_app
 
 on:
   push:
