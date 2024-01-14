@@ -1,4 +1,4 @@
-name: go_web_echo_app
+name: go_web_echo_app with name spaces
 
 on:
   push:
@@ -9,5 +9,7 @@ jobs:
   Unit-Tests:
     runs-on: ubuntu-latest
     steps:
+      - name: checkout
+        uses: actions/checkout@v4
       - name: "Test Utils"
         run: echo "This is were tests will happen"
