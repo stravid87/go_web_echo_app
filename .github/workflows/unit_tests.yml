@@ -1,10 +1,11 @@
-name: go_web_echo_app
+name: go_web_echo_app Unit Tests
 
 on:
   workflow_dispatch:
 
 jobs:
-  HelloTesT:
+  Unit-Tests:
     runs-on: ubuntu-latest
     steps:
-        run: echo "Hello Tests"
+      - name: "Test Utils"
+        run: echo "This is were tests will happen"
