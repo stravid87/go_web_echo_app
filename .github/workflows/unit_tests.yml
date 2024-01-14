@@ -1,7 +1,7 @@
 name: go_web_echo_app Unit Tests
 
 on:
-  workflow_dispatch
+  workflow_dispatch:
 
 jobs:
   Run-Unit-Tests:
