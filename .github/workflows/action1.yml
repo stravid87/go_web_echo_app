@@ -2,8 +2,7 @@ name: action1.yml
 
 on:
   push:
-    branch:
-      - development
+    branches: [ "development"]
 
 jobs:
   SayHi:
