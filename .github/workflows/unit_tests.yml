@@ -1,11 +1,10 @@
 name: go_web_echo_app Unit Tests
 
 on:
-  workflow_dispatch:
-    inputs:
-      tags:
-      environment: 
-
+  push:
+    branches:
+      - stravid87/testing_t1
+      
 jobs:
   Unit-Tests:
     runs-on: ubuntu-latest
