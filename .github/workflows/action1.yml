@@ -1,0 +1,12 @@
+name: action1.yml
+
+on:
+  push:
+    branch:
+      - development
+
+jobs:
+  SayHi:
+    steps:
+      - name: Echo Man
+      run: echo "Hello World"
