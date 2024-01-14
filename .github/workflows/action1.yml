@@ -1,11 +1,12 @@
-name: action1.yml
+name: action_development.yml
 
 on:
   push:
-    branches: [ "development"]
+    branches:
+      - development
 
 jobs:
   SayHi:
+    runs-on: ubuntu-latest
     steps:
-      - name: Echo Man
-      run: echo "Hello World"
+        run: echo "Hello World"
