@@ -2,6 +2,9 @@ name: go_web_echo_app Unit Tests
 
 on:
   workflow_dispatch:
+    inputs:
+      tags:
+      environment: 
 
 jobs:
   Unit-Tests:
