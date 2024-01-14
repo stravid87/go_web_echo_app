@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
-        uses: actions/checkout@4
+        uses: actions/checkout@v4
       - name: "Test Utils"
         run: echo "This is were tests will happen"
       - name: "Test with the Go CLI"
