@@ -4,7 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-      environment: 
+      environment:
+  pull_requests:
+    types:
+      - opened
+    branches:
+      - development
 
 jobs:
   Manual_Hello:
