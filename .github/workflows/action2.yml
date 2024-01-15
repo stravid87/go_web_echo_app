@@ -1,0 +1,14 @@
+name: action1.yml
+
+on:
+  push:
+    branches:
+      - stravid87/testing_t1
+
+
+jobs:
+  Hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Hello World!
+        run: echo "Hello World"

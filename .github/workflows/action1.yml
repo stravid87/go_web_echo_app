@@ -1,0 +1,12 @@
+name: action_development.yml
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  SayHi:
+    runs-on: ubuntu-latest
+    steps:
+        run: echo "Hello World"
