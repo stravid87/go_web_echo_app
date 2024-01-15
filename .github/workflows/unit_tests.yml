@@ -1,4 +1,4 @@
-name: first testing action
+name: Test-A-Go-File-On-Push
 
 on:
   push:
