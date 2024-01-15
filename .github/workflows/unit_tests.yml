@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - stravid87/testing_t1
+  pull_request:
+    types:
+      - opened
       
 jobs:
   Unit-Tests:
