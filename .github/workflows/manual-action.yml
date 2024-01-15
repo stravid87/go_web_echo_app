@@ -1,0 +1,19 @@
+name: manual-action
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+      environment:
+  pull_request:
+    types:
+      - opened
+    branches:
+      - development
+
+jobs:
+  Manual_Hello:
+    runs-on: ubuntu-latest
+    steps: [{run: "echo 'Job Manual_Hello was run'"}]
+
+  
